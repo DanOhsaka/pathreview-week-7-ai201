@@ -19,6 +19,6 @@ Section detection in `ingestion/parsers/resume_parser.py` looks for headers like
 
 **Branch name:** fix/147-resume-section-whitespace
 
-**Setup confirmation:** [ ] App runs locally at localhost:5173
+**Setup confirmation:** [x] App runs locally at localhost:5173
 
-**Cohort ledger:** [ ] Issue added to cohort ledger
+**Cohort ledger:** [x] Issue added to cohort ledger
