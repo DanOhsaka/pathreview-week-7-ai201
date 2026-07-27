@@ -124,12 +124,18 @@ class ResumeParser(BaseParser):
         return text.strip()
 
     def _detect_sections(self, text: str) -> list[str]:
-        """Detect common resume sections from text."""
+        """Detect common resume sections from text.
+
+        Issue #147: PDF / indented text often has leading whitespace before
+        headers (e.g. ``    Education:``). Patterns must allow optional ``\\s*``
+        after ``^`` / ``\\n`` or ``detected_sections`` stays empty. Reproduce
+        with ``python scripts/reproduce_issue_147.py``.
+        """
         detected = []
         text_lower = text.lower()
 
         for section in SECTION_HEADERS:
-            # Look for section header patterns
+            # Allow leading whitespace so indented PDF headers still match (#147)
             patterns = [
                 rf"^\s*{re.escape(section)}\s*$",
                 rf"^\s*{re.escape(section)}\s*[:|-]",
