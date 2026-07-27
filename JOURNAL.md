@@ -22,3 +22,17 @@ Section detection in `ingestion/parsers/resume_parser.py` looks for headers like
 **Setup confirmation:** [x] App runs locally at localhost:5173
 
 **Cohort ledger:** [x] Issue added to cohort ledger
+
+## Week 8 — Reproduction & solution planning
+
+**Reproduction commit link:** https://github.com/DanOhsaka/pathreview-week-7-ai201/commit/06591db977b1f934049e0ef1148ac6c33f91efe0
+
+**Reproduction summary:**
+I ran the exact indented resume sample from issue #147 through the old `_detect_sections` regexes (no `\s*` after `^`/`\n`) and got `detected_sections: []`, then compared that to the current parser which returns Education and Skills. That comparison is checked in as `scripts/reproduce_issue_147.py` plus a docstring on `_detect_sections` explaining the failure mode.
+
+**PLAN.md link:** https://github.com/DanOhsaka/pathreview-week-7-ai201/blob/fix/147-resume-section-whitespace/PLAN.md
+
+**Walkthrough video (recommended):** 
+
+**Blockers or open questions:**
+None for the core fix. Optional follow-up: whether multi-line PDF headers (header split across lines) need a separate issue; out of scope for #147.
