@@ -36,3 +36,36 @@ I ran the exact indented resume sample from issue #147 through the old `_detect_
 
 **Blockers or open questions:**
 None for the core fix. Optional follow-up: whether multi-line PDF headers (header split across lines) need a separate issue; out of scope for #147.
+
+## Week 9 — Solution building & PR submission
+
+### Check-in 1 (mid-week)
+
+**Current progress:**
+Completed PLAN.md sub-tasks for reproduction and the core regex fix in `_detect_sections()` (`^\s*` / `\n\s*` before section names). Added `scripts/reproduce_issue_147.py` to show broken vs fixed behavior, and confirmed the issue #147 sample returns Education/Skills instead of `[]`.
+
+**Next steps:**
+Finish regression tests for edge cases (flush-left, multi-word headers, bare lines, empty input), run unit checks, open the PR against `ascherj/pathreview`, and request peer/mentor feedback in Slack.
+
+**Blockers:**
+None.
+
+---
+
+### Check-in 2 (end of week)
+
+**PR link:** https://github.com/ascherj/pathreview/pull/430
+
+**Branch:** `fix/147-resume-section-whitespace`
+
+**What you built:**
+Section-header detection in `ingestion/parsers/resume_parser.py` now allows optional leading whitespace so PDF-indented resumes still populate `detected_sections`. Patterns still require end-of-line or `:`/`|`/`-` after the header to reduce false matches.
+
+**Tests added or updated:**
+`tests/unit/test_resume_section_whitespace.py` — covers the issue #147 sample, flush-left headers, indented multi-word headers (`Work Experience`), bare indented headers, and text with no sections.
+
+**Self-review confirmation:** [x] make check passes  [x] make test-unit passes
+
+Notes: Pre-commit ruff/black/mypy passed on commits for touched files. Targeted unit tests for this change pass (5/5). Two pre-existing failures in `test_resume_parser.py` (`test_parse_markdown_resume`, `test_strip_markdown_syntax`) are unrelated markdown-stripping bugs and were not introduced by this PR (documented in the PR description).
+
+**Draft PR feedback received from:** none
