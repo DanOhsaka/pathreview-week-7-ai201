@@ -69,3 +69,34 @@ Section-header detection in `ingestion/parsers/resume_parser.py` now allows opti
 Notes: Pre-commit ruff/black/mypy passed on commits for touched files. Targeted unit tests for this change pass (5/5). Two pre-existing failures in `test_resume_parser.py` (`test_parse_markdown_resume`, `test_strip_markdown_syntax`) are unrelated markdown-stripping bugs and were not introduced by this PR (documented in the PR description).
 
 **Draft PR feedback received from:** none
+
+## Week 10 — Iteration & reflection
+
+### Reviewer feedback
+
+**Feedback received:** [ ] Yes  [x] No — still awaiting review
+
+**Summary of feedback:**
+No maintainer or reviewer comments on [PR #430](https://github.com/ascherj/pathreview/pull/430) by the end of Week 10. Summer 2026 does not provide formal reviewer feedback, so this is expected.
+
+**How you responded:**
+
+
+---
+
+### Reflection
+
+**What was harder than you expected?**
+Getting a reliable local environment on Windows was harder than the bug itself. Installing `make`, learning that PowerShell can’t run this Makefile (it needs Git Bash), fixing a UTF-16-corrupted `.bashrc`, and waiting for Docker Desktop before `make setup` / `make run` took more time than editing four regexes. Pre-commit also blocked commits until I fixed a ruff `B904` issue and learned that touching the old `test_resume_parser.py` file triggered mypy on untyped tests that weren’t part of my change.
+
+**What did you learn about working in a large codebase?**
+In your own project you can change anything; here the win was staying scoped. Issue #147 lived in one function (`_detect_sections`), but I still had to read call sites (`_parse_pdf` / `_parse_markdown`), match existing pytest patterns, and document unrelated failing markdown tests so reviewers knew I didn’t introduce them. Contributing means proving the bug, naming exact files, and leaving the rest of the system alone.
+
+**How did AI tools help — and where did they fall short?**
+AI helped navigate setup (PATH, Git Bash vs PowerShell), draft `PLAN.md` / journal sections, and scaffold regression tests. It fell short when environment details were Windows-specific — e.g. PowerShell writing UTF-16 into `.bashrc`, or assuming `source` works outside bash. I still had to run the reproduction script myself, compare broken vs fixed regexes, and decide what belonged in the upstream PR vs course-only docs.
+
+**What would you do differently if you started over?**
+I’d finish local setup in Git Bash on day one before touching code, open a draft PR earlier in Week 9 for peer feedback in Slack, and write the focused regression file (`test_resume_section_whitespace.py`) first so I never fight mypy on the older untyped test module. I’d also keep course artifacts (`JOURNAL.md`, `PLAN.md`) clearly separated from the minimal fix commits in my head when writing the PR description.
+
+**What are you most proud of from this module?**
+Building a clear reproduction path — `scripts/reproduce_issue_147.py` showing old patterns return `[]` and the fixed parser returns Education/Skills — plus a small, targeted test suite that locks the edge cases from the plan. That made the PR feel like a real contribution, not just a one-line tweak.
